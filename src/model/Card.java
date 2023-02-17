@@ -1,5 +1,8 @@
 package model;
 
+import java.util.List;
+import java.util.Random;
+
 public class Card {
     //1 = diamond (ASCII: 4), 2 = club (ASCII: 5), 3 = heart (ASCII: 3), 4 = spades (ASCII: 6)
     private short suit;
@@ -23,6 +26,4 @@ public class Card {
     public int getNumber() {
         return number;
     }
-
-
 }

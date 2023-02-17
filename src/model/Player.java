@@ -2,8 +2,10 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Player {
+    private static final int CARD_UPPERBOUND = 52;
     private List<Card> handCard = new ArrayList<>();
     private int money;
 
@@ -22,20 +24,29 @@ public class Player {
     public int getMoney (){
         return money;
     }
+    public void addCard(Card card){
+        handCard.add(card);
+    }
+    public int getHandCardSize(){
+        return handCard.size();
+    }
+    public Card getIndex(int index){
+        return handCard.get(index);
+    }
     public void printHandCard(){
         for(Card card : handCard){
             switch(card.getSuit()){
                 case DIAMOND:
-                    System.out.printf("%c", 4);
+                    System.out.print("\u2666");
                     break;
                 case CLUB:
-                    System.out.printf("%c", 5);
+                    System.out.print("\u2663");
                     break;
                 case HEART:
-                    System.out.printf("%c", 3);
+                    System.out.print("\u2665");
                     break;
                 case SPADE:
-                    System.out.printf("%c", 6);
+                    System.out.print("\u2660");
                     break;
             }
             switch(card.getNumber()){
@@ -55,6 +66,8 @@ public class Player {
                     System.out.printf("%d", card.getNumber()+1);
             }
             System.out.println();
+
+
         }
     }
     public void sortBySuit(){
@@ -65,19 +78,18 @@ public class Player {
                 currCard = handCard.get(j);
                 nextCard = handCard.get(j + 1);
                 if(currCard.getSuit() * currCard.getNumber() < nextCard.getSuit() * nextCard.getNumber()){
-                    swap(j);
+                    swap(currCard, nextCard);
                 }
             }
         }
     }
 
-    private void swap(int j) {
-        Card currCard = handCard.get(j), nextCard = handCard.get(j + 1);
-        Card temp = new Card(currCard.getSuit(), currCard.getNumber());
-        currCard.setSuit(nextCard.getSuit());
-        currCard.setNumber(nextCard.getNumber());
-        nextCard.setSuit(temp.getSuit());
-        nextCard.setNumber(temp.getNumber());
+    private void swap(Card i, Card j) {
+        Card temp = new Card(i.getSuit(), i.getNumber());
+        i.setSuit(j.getSuit());
+        i.setNumber(j.getNumber());
+        j.setSuit(temp.getSuit());
+        j.setNumber(temp.getNumber());
     }
 
     public void sortByNumber(){
@@ -88,9 +100,21 @@ public class Player {
                 currCard = handCard.get(j);
                 nextCard = handCard.get(j + 1);
                 if(currCard.getNumber() > nextCard.getNumber()){
-                    swap(j);
+                    swap(currCard, nextCard);
                 }
             }
+        }
+    }
+
+    public void cardRandomize(){
+        int p, q;
+        Random random = new Random();
+        for(int i = 1; i <= 100; i++){
+            do {
+                p = random.nextInt(CARD_UPPERBOUND);
+                q = random.nextInt(CARD_UPPERBOUND);
+            }while(p == q);
+            swap(handCard.get(p), handCard.get(q));
         }
     }
 }
